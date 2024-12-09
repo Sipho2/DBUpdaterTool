@@ -1,0 +1,31 @@
+.label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+}
+
+.text-field {
+    -fx-background-color: #f7f7f7;
+    -fx-border-color: #cccccc;
+    -fx-padding: 8px;
+    -fx-font-size: 11px;
+    -fx-min-width: 200px;
+}
+
+.button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 4px;
+    -fx-min-width:150px;
+}
+
+.button:hover {
+    -fx-background-color: #45A049;
+}
+
+.vbox {
+    -fx-spacing: 10;
+    -fx-padding: 20;
+}
