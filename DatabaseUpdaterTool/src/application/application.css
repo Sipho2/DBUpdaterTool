@@ -1,7 +1,6 @@
 .label {
     -fx-font-size: 12px;
     -fx-text-fill: #333;
-    -fx-font-weight: bold;
 }
 
 .text-field {
@@ -15,10 +14,10 @@
 .button {
     -fx-background-color: #4CAF50;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px 20px;
+    -fx-font-size: 11px;
+    -fx-padding: 5px 10px;
     -fx-border-radius: 4px;
-    -fx-min-width:150px;
+    -fx-min-width:110px;
 }
 
 .button:hover {
@@ -29,3 +28,14 @@
     -fx-spacing: 10;
     -fx-padding: 20;
 }
+
+#resultsOutput {
+    -fx-pref-height: 200px;  /* Set preferred height for the box */
+    -fx-border-color: #cccccc; /* Add a light border for visibility */
+    -fx-border-width: 1px;
+    -fx-padding: 5px;         /* Add some padding inside the box */
+    -fx-control-inner-background: #f9f9f9; /* Light background color */
+    -fx-font-family: "Arial"; /* Set the font family */
+    -fx-font-size: 12px;      /* Set the font size */
+}
+
