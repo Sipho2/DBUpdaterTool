@@ -1,12 +1,12 @@
 .label {
-    -fx-font-size: 12px;
+    -fx-font-size: 11px;
     -fx-text-fill: #333;
 }
 
 .text-field {
     -fx-background-color: #f7f7f7;
     -fx-border-color: #cccccc;
-    -fx-padding: 8px;
+    -fx-padding: 4px;
     -fx-font-size: 11px;
     -fx-min-width: 200px;
 }
