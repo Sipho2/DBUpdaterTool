@@ -54,65 +54,65 @@ public class Main extends Application {
         container.setStyle("-fx-padding: 20; -fx-alignment: center;");
 
         //Add input field for Connections( we get these from an xml file)
-        GridPane ConnectionPane = createConnectionField(); // Your existing method        
+        GridPane connectionPane = createConnectionField(); // Your existing method        
         // Add input fields for DB details
         GridPane dbDetailsPane = createDBInputFields(); // Your existing method
         // Add input field for updatescripts location
-        GridPane FolderLocationPane = createScriptsLocationField(stg);
+        GridPane folderLocationPane = createScriptsLocationField(stg);
         
         // Create BorderPan Sql Update Scripts folder
-        BorderPane ConnectionSection = new BorderPane();
-        ConnectionSection.setStyle(
+        BorderPane connectionSection = new BorderPane();
+        connectionSection.setStyle(
                 "-fx-border-color: gray; " +
                 "-fx-border-width: 1; " +
                 "-fx-border-radius: 5; " +
                 "-fx-background-color: #f9f9f9;"
             );
         // Label for the title
-        Label ConnectionSectionLabel = new Label("Connections");
-        ConnectionSectionLabel.setStyle(
+        Label connectionSectionLabel = new Label("Connections");
+        connectionSectionLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-background-color: #f9f9f9; " +
             "-fx-padding: 0 5 0 5;"
         );
         // Position the label at the top of the border
-        ConnectionSection.setTop(ConnectionSectionLabel);
-        BorderPane.setAlignment(ConnectionSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
-        BorderPane.setMargin(ConnectionSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
+        connectionSection.setTop(connectionSectionLabel);
+        BorderPane.setAlignment(connectionSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
+        BorderPane.setMargin(connectionSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
         // Add padding directly to the GridPane if needed (optional)
-        ConnectionPane.setPadding(new javafx.geometry.Insets(10)); // Adds padding inside the GridPane
+        connectionPane.setPadding(new javafx.geometry.Insets(10)); // Adds padding inside the GridPane
         // Add DB input fields to the center of the BorderPane
-        ConnectionSection.setCenter(ConnectionPane);
+        connectionSection.setCenter(connectionPane);
         
         // Create BorderPan Sql Update Scripts folder
-        BorderPane FolderSection = new BorderPane();
-        FolderSection.setStyle(
+        BorderPane folderSection = new BorderPane();
+        folderSection.setStyle(
                 "-fx-border-color: gray; " +
                 "-fx-border-width: 1; " +
                 "-fx-border-radius: 5; " +
                 "-fx-background-color: #f9f9f9;"
             );
         // Label for the title
-        Label FolderSectionLabel = new Label("SQL Update Scripts Folder");
-        FolderSectionLabel.setStyle(
+        Label folderSectionLabel = new Label("SQL Update Scripts Folder");
+        folderSectionLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-background-color: #f9f9f9; " +
             "-fx-padding: 0 5 0 5;"
         );
         // Position the label at the top of the border
-        FolderSection.setTop(FolderSectionLabel);
-        BorderPane.setAlignment(FolderSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
-        BorderPane.setMargin(FolderSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
+        folderSection.setTop(folderSectionLabel);
+        BorderPane.setAlignment(folderSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
+        BorderPane.setMargin(folderSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
         // Add padding directly to the GridPane if needed (optional)
-        FolderLocationPane.setPadding(new javafx.geometry.Insets(10)); // Adds padding inside the GridPane
+        folderLocationPane.setPadding(new javafx.geometry.Insets(10)); // Adds padding inside the GridPane
         // Add DB input fields to the center of the BorderPane
-        FolderSection.setCenter(FolderLocationPane);
+        folderSection.setCenter(folderLocationPane);
         
         // Create a BorderPane for precise control over label placement
-        BorderPane DbSection = new BorderPane();
-        DbSection.setStyle(
+        BorderPane dbSection = new BorderPane();
+        dbSection.setStyle(
             "-fx-border-color: gray; " +
             "-fx-border-width: 1; " +
             "-fx-border-radius: 5; " +
@@ -120,8 +120,8 @@ public class Main extends Application {
         );
 
         // Label for the title
-        Label DbSectionLabel = new Label("Database");
-        DbSectionLabel.setStyle(
+        Label dbSectionLabel = new Label("Database");
+        dbSectionLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-background-color: #f9f9f9; " +
@@ -129,22 +129,22 @@ public class Main extends Application {
         );
 
         // Position the label at the top of the border
-        DbSection.setTop(DbSectionLabel);
-        BorderPane.setAlignment(DbSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
-        BorderPane.setMargin(DbSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
+        dbSection.setTop(dbSectionLabel);
+        BorderPane.setAlignment(dbSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
+        BorderPane.setMargin(dbSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
         // Add padding directly to the GridPane if needed (optional)
         dbDetailsPane.setPadding(new javafx.geometry.Insets(10)); // Adds padding inside the GridPane
 
         // Add DB input fields to the center of the BorderPane
-        DbSection.setCenter(dbDetailsPane);
+        dbSection.setCenter(dbDetailsPane);
 
         // Add buttons
         GridPane dbButtons = createDBButtons();
 
         
         // Create a BorderPane for precise control over label placement
-        BorderPane ResultSection = new BorderPane();
-        ResultSection.setStyle(
+        BorderPane resultSection = new BorderPane();
+        resultSection.setStyle(
             "-fx-border-color: gray; " +
             "-fx-border-width: 1; " +
             "-fx-border-radius: 5; " +
@@ -152,8 +152,8 @@ public class Main extends Application {
         );
 
         // Label for the title
-        Label ResultSectionLabel = new Label("Result");
-        ResultSectionLabel.setStyle(
+        Label resultSectionLabel = new Label("Result");
+        resultSectionLabel.setStyle(
             "-fx-font-size: 14px; " +
             "-fx-font-weight: bold; " +
             "-fx-background-color: #f9f9f9; " +
@@ -161,9 +161,9 @@ public class Main extends Application {
         );
 
         // Position the label at the top of the border
-        ResultSection.setTop(ResultSectionLabel);
-        BorderPane.setAlignment(ResultSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
-        BorderPane.setMargin(ResultSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
+        resultSection.setTop(resultSectionLabel);
+        BorderPane.setAlignment(resultSectionLabel, javafx.geometry.Pos.TOP_LEFT); // Change to TOP_CENTER if needed
+        BorderPane.setMargin(resultSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
 
         // Results output box
         TextArea resultsOutput = new TextArea();
@@ -172,9 +172,9 @@ public class Main extends Application {
         resultsOutput.setWrapText(true);
         resultsOutput.setPrefHeight(200);
         // Add DB input fields to the center of the BorderPane
-        ResultSection.setCenter(resultsOutput);
+        resultSection.setCenter(resultsOutput);
         // Add all sections to the main container
-        container.getChildren().addAll(ConnectionSection,FolderSection,DbSection, dbButtons, ResultSection);
+        container.getChildren().addAll(connectionSection,folderSection,dbSection, dbButtons, resultSection);
 
         return container;
     }
