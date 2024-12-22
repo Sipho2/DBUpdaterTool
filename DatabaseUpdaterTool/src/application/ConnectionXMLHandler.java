@@ -8,7 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectionXMLHandler {
+    private static final ConnectionXMLHandler INSTANCE = new ConnectionXMLHandler();
 
+    public ConnectionXMLHandler() {}
+
+    public static ConnectionXMLHandler getInstance() {
+        return INSTANCE;
+    }
     // Method to parse XML file and create Connection objects
     public List<Connection> readConnectionsFromXML(String filePath) {
         List<Connection> connections = new ArrayList<>();

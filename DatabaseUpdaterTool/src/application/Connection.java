@@ -87,4 +87,11 @@ public class Connection {
             return new Connection(this);
         }
     }
+
+	@Override
+	public String toString() {
+		return "Connection [serverName=" + serverName + ", databaseName=" + databaseName + ", user=" + user
+				+ ", password=" + password + ", scriptsFolder=" + scriptsFolder + ", scriptsLogTable=" + scriptsLogTable
+				+ "]";
+	}
 }

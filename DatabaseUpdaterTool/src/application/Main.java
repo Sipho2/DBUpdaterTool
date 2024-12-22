@@ -1,6 +1,7 @@
 package application;
 
 import java.io.File;
+import java.util.List;
 
 //import java.awt.TextArea;
 
@@ -15,13 +16,20 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
+	private ComboBox<String> comboBox;
+	private String fileLocation = "C:\\Users\\Sipho\\OneDrive\\Desktop\\Connections.xml";
+	TextField folderPathField;
+	
+    TextField dbServerNameField;
+    TextField dbNameField;
+    TextField dbUserNameField;
+    TextField dbPasswordField;
+    TextField dbScriptLogNameField;	
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -206,14 +214,14 @@ public class Main extends Application {
         Label dbNameLabel = new Label("Database");
         Label dbUserNameLabel = new Label("User");
         Label dbPasswordLabel = new Label("Password");
-        Label dbScriptsLocationLabel = new Label("Scripts Log Table");
+        Label dbScriptLogNameLabel = new Label("Scripts Log Table");
 
         // Create text fields
-        TextField dbServerNameField = new TextField();
-        TextField dbNameField = new TextField();
-        TextField dbUserNameField = new TextField();
-        TextField dbPasswordField = new TextField();
-        TextField dbScriptsLocationField = new TextField();
+        dbServerNameField = new TextField();
+        dbNameField = new TextField();
+        dbUserNameField = new TextField();
+        dbPasswordField = new TextField();
+        dbScriptLogNameField = new TextField();
 //        dbPasswordField.setPromptText("Enter password...");
 //        dbServerNameField.setPromptText("localhost");
 //        dbNameField.setPromptText("Test");
@@ -228,13 +236,12 @@ public class Main extends Application {
         gridPane.add(dbUserNameField, 1, 2);
         gridPane.add(dbPasswordLabel, 0, 3);
         gridPane.add(dbPasswordField, 1, 3);
-        gridPane.add(dbScriptsLocationLabel, 0, 4);
-        gridPane.add(dbScriptsLocationField, 1, 4);
+        gridPane.add(dbScriptLogNameLabel, 0, 4);
+        gridPane.add(dbScriptLogNameField, 1, 4);
 
         return gridPane;
     }
-
-    
+   
     private GridPane createScriptsLocationField(Stage stage) {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10); // Horizontal spacing between columns
@@ -252,7 +259,7 @@ public class Main extends Application {
 
     private HBox createFolderInputField(Stage stage) {
         // TextField for manual input
-        TextField folderPathField = new TextField();
+        folderPathField = new TextField();
         folderPathField.setPromptText("Enter folder location or browse...");
         HBox.setHgrow(folderPathField, Priority.ALWAYS); // Allow the TextField to grow horizontally
 
@@ -290,17 +297,48 @@ public class Main extends Application {
         gridPane.setVgap(15); // Vertical spacing between rows
         gridPane.setStyle("-fx-alignment: center;");
  
-        ComboBox<String> comboBox = new ComboBox<String>();
-        gridPane.add(comboBox, 0, 0);  
+        comboBox = new ComboBox<String>();
+
+    	ConnectionXMLHandler handler = new ConnectionXMLHandler();
+    	List<Connection> connections = handler.readConnectionsFromXML(this.fileLocation);
+    	for(Connection conn : connections) {
+    		comboBox.getItems().addAll(conn.getServerName());
+    	}
+        // Add event handler for value changes
+        comboBox.setOnAction(event -> handleComboBoxSelection(connections));
+        gridPane.add(comboBox, 0, 0);
         return gridPane;
     }
     
+    
+    private void handleComboBoxSelection(List<Connection> conn) {
+        String selectedConnection = comboBox.getValue();
+        for(Connection con: conn) {
+        	if(con.getServerName() == selectedConnection) {
+        	    dbServerNameField.setText(con.getServerName());
+        	    dbNameField.setText(con.getDatabaseName());
+        	    dbUserNameField.setText(con.getUser());
+        	    dbPasswordField.setText(con.getPassword());
+        	    dbScriptLogNameField.setText(con.getDatabaseName());
+        	    folderPathField.setText(con.getScriptsFolder());
+        	}
+        }
+    }
+ 
     /**
      * Handles the "Submit" button action.
      * 
      * @param dbDetailsPane The grid containing the text fields for DB details.
      */
-    private void handleSubmit(GridPane dbDetailsPane) {
+    private void handleUpdateDb() {
+
+    }
+    
+    private void showNewScripts() {
+
+    }
+    
+    private void installDb() {
 
     }
 
