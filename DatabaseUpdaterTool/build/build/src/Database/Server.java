@@ -18,7 +18,6 @@ private Server(Builder bob) {
 	this.Server_Url = "jdbc:sqlserver://" + bob.ServerName + ":1433;encrypt=true;trustServerCertificate=true";
 }
 
-
 public String getPassword() { return Password; }
 public String getUserName() { return User_Name; }
 public String getServerName() { return Server_Name; }

@@ -1,7 +1,12 @@
 package application;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
+
+import Database.*;
 
 //import java.awt.TextArea;
 
@@ -22,14 +27,31 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	private ComboBox<String> comboBox;
-	private String fileLocation = "C:\\Users\\Sipho\\OneDrive\\Desktop\\Connections.xml";
+	private String ConnectionsFileLocation = "C:\\Users\\Sipho\\OneDrive\\Desktop\\Connections.xml";
+	private String ScriptsLocation = "C:\\Users\\Sipho\\source\\Database\\Scripts";
+	private ScriptsHandler scripts = new ScriptsHandler.Builder()
+									.SetFileLocation(ScriptsLocation)
+									.build();
+	private Server Server = new Server.Builder()
+							.setServerName("localhost")
+							.setUserName("sa")
+							.setPassword("password")
+							.build();
+	private Database Db = new Database.Builder()
+							.setDatabaseName("G-Money")
+							.setServerName(Server)
+							.build();
 	TextField folderPathField;
 	
     TextField dbServerNameField;
-    TextField dbNameField;
     TextField dbUserNameField;
     TextField dbPasswordField;
     TextField dbScriptLogNameField;	
+    TextArea resultsOutput;
+    
+    Button button;
+    Button button2;
+    Button button3;
     @Override
     public void start(Stage primaryStage) {
         try {
@@ -149,7 +171,6 @@ public class Main extends Application {
         // Add buttons
         GridPane dbButtons = createDBButtons();
 
-        
         // Create a BorderPane for precise control over label placement
         BorderPane resultSection = new BorderPane();
         resultSection.setStyle(
@@ -174,7 +195,7 @@ public class Main extends Application {
         BorderPane.setMargin(resultSectionLabel, new javafx.geometry.Insets(-10, 0, 0, 10)); // Adjust margins if needed
 
         // Results output box
-        TextArea resultsOutput = new TextArea();
+        resultsOutput = new TextArea();
         resultsOutput.setId("resultsOutput");
         resultsOutput.setEditable(false);
         resultsOutput.setWrapText(true);
@@ -190,12 +211,14 @@ public class Main extends Application {
     	GridPane gridPane = new GridPane();
     	gridPane.setHgap(10);
         gridPane.setStyle("-fx-alignment: center;");
-        Button button = new Button("Update Database");
-        Button button2 = new Button("Show New Scripts");
-        Button button3 = new Button("Install Database");
+        button = new Button("Update Database");
+        button2 = new Button("Show New Scripts");
+        button3 = new Button("Install Database");
         gridPane.add(button, 0, 0);
         gridPane.add(button2, 1, 0);
         gridPane.add(button3, 2, 0);
+        button2.setOnAction(event -> showNewScripts());
+        button3.setOnAction(event -> installDb());
         return gridPane;
     }
     /**
@@ -211,33 +234,25 @@ public class Main extends Application {
 
         // Create labels
         Label dbServerLabel = new Label("Server");
-        Label dbNameLabel = new Label("Database");
         Label dbUserNameLabel = new Label("User");
         Label dbPasswordLabel = new Label("Password");
         Label dbScriptLogNameLabel = new Label("Scripts Log Table");
 
         // Create text fields
         dbServerNameField = new TextField();
-        dbNameField = new TextField();
         dbUserNameField = new TextField();
         dbPasswordField = new TextField();
         dbScriptLogNameField = new TextField();
-//        dbPasswordField.setPromptText("Enter password...");
-//        dbServerNameField.setPromptText("localhost");
-//        dbNameField.setPromptText("Test");
-//        dbUserNameField.setPromptText("sa");
         
         // Add labels and fields to the grid
         gridPane.add(dbServerLabel,0,0);
         gridPane.add(dbServerNameField,1,0);       
-        gridPane.add(dbNameLabel, 0, 1);
-        gridPane.add(dbNameField, 1, 1);
-        gridPane.add(dbUserNameLabel, 0, 2);
-        gridPane.add(dbUserNameField, 1, 2);
-        gridPane.add(dbPasswordLabel, 0, 3);
-        gridPane.add(dbPasswordField, 1, 3);
-        gridPane.add(dbScriptLogNameLabel, 0, 4);
-        gridPane.add(dbScriptLogNameField, 1, 4);
+        gridPane.add(dbUserNameLabel, 0, 1);
+        gridPane.add(dbUserNameField, 1, 1);
+        gridPane.add(dbPasswordLabel, 0, 2);
+        gridPane.add(dbPasswordField, 1, 2);
+        gridPane.add(dbScriptLogNameLabel, 0, 3);
+        gridPane.add(dbScriptLogNameField, 1, 3);
 
         return gridPane;
     }
@@ -299,27 +314,29 @@ public class Main extends Application {
  
         comboBox = new ComboBox<String>();
 
-    	ConnectionXMLHandler handler = new ConnectionXMLHandler();
-    	List<Connection> connections = handler.readConnectionsFromXML(this.fileLocation);
-    	for(Connection conn : connections) {
+    	AppConnectionHandler handler = new AppConnectionHandler();
+    	List<AppConnection> connections = handler.readConnectionsFromXML(this.ConnectionsFileLocation);
+    	for(AppConnection conn : connections) {
     		comboBox.getItems().addAll(conn.getServerName());
     	}
         // Add event handler for value changes
         comboBox.setOnAction(event -> handleComboBoxSelection(connections));
+        
         gridPane.add(comboBox, 0, 0);
         return gridPane;
     }
     
     
-    private void handleComboBoxSelection(List<Connection> conn) {
+    private void handleComboBoxSelection(List<AppConnection> conn) {
         String selectedConnection = comboBox.getValue();
-        for(Connection con: conn) {
+        resultsOutput.clear();
+        for(AppConnection con: conn) {
+        	
         	if(con.getServerName() == selectedConnection) {
         	    dbServerNameField.setText(con.getServerName());
-        	    dbNameField.setText(con.getDatabaseName());
         	    dbUserNameField.setText(con.getUser());
         	    dbPasswordField.setText(con.getPassword());
-        	    dbScriptLogNameField.setText(con.getDatabaseName());
+        	    dbScriptLogNameField.setText(con.getScriptsLogTable());
         	    folderPathField.setText(con.getScriptsFolder());
         	}
         }
@@ -335,11 +352,36 @@ public class Main extends Application {
     }
     
     private void showNewScripts() {
+        resultsOutput.clear();
+        System.out.println(Db.ConnectToDB());
 
+        String url = "jdbc:sqlserver://localhost:1433;encrypt=true;trustServerCertificate=true";
+        String username = "sa"; // Replace with your SQL Server username
+        String password = "password"; // Replace with your SQL Server password
+        Server app = new Server.Builder()
+        						.setPassword(password)
+        						.setUserName(username)
+        						.setServerName("localhost")
+        						.build();
+        try {
+            // Try to connect to the database
+            Connection connection = DriverManager.getConnection(app.getServerUrl(), app.getUserName(), app.getPassword());
+            System.out.println(app.Authenticate());
+            System.out.println("Connection successful!");
+            connection.close();
+        } catch (SQLException e) {
+            // Print error if connection fails
+            System.out.println("Connection failed: " + e.getMessage());
+        } 
+        
+    	for(String Script : scripts.getScripts()) {
+    		resultsOutput.appendText(Script + "\n");
+    	}
+    	
     }
     
     private void installDb() {
-
+    	
     }
 
     public static void main(String[] args) {
