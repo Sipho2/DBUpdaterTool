@@ -49,6 +49,7 @@ ________________________________________
 Future Enhancements
 •	Adding support for NoSQL databases (e.g., MongoDB).
 •	Integration with CI/CD pipelines for seamless database updates during deployments.
-•	Advanced reporting and monitoring tools to provide real-time update status.
+•	Adding more connection channels(e.g allowing the ue of Windows Auth to connect to server)
 •	Enhanced security features for sensitive database connections.
+
 
